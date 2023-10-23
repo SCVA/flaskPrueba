@@ -33,6 +33,11 @@ jobs:
         run: |
           docker build -t docker.io/${{ secrets.AzureAppService_ContainerUsername_b2fa43c2e5184a838ce38437e6b405fc }}/flaskapp2:${{ github.sha }} .
 
+      - name: Run Docker Scan
+        run: |
+          docker login -u ${{ secrets.AzureAppService_ContainerUsername_b2fa43c2e5184a838ce38437e6b405fc }} -p ${{ secrets.AzureAppService_ContainerPassword_954693ea990e441596836ee142312b5b }}
+          docker scan docker.io/${{ secrets.AzureAppService_ContainerUsername_b2fa43c2e5184a838ce38437e6b405fc }}/flaskapp2:${{ github.sha }}
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
